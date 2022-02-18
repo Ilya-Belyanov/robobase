@@ -1,70 +1,54 @@
-import copy
-
-
 class Node:
+    """common node for graph"""
     parent_id = -1
     coord = [-1, -1]
     is_watched = False
 
 
-def createGraph(input_map: list, node_class):
-    graph = dict()
+def create_graph(input_map: list, node_class):
+    graph = {}
     count = 0
-    for x in range(len(input_map)):
-        for y in range(len(input_map[x])):
-            if not input_map[x][y]:
-                n = node_class()
-                n.coord = [x, y]
-                graph[count] = n
+    for x_coord, _ in enumerate(input_map):
+        for y_coord, _ in enumerate(input_map[x_coord]):
+            if not input_map[x_coord][y_coord]:
+                node = node_class()
+                node.coord = [x_coord, y_coord]
+                graph[count] = node
                 count += 1
     return graph
 
 
-def idByCoord(coord: list, graph: dict):
-    for id in graph.keys():
-        if graph[id].coord == coord:
-            return id
+def id_by_coord(coord: list, graph: dict):
+    for key in graph.keys():
+        if graph[key].coord == coord:
+            return key
     return -1
 
 
-def neighbors(id: list, graph: dict):
-    coord = graph[id].coord
+def neighbors(key: list, graph: dict):
+    coord = graph[key].coord
 
-    nearCoords = [[coord[0] + 1, coord[1]],
-            [coord[0] - 1, coord[1]],
-            [coord[0], coord[1] + 1],
-            [coord[0], coord[1] - 1]]
+    near_coords = [[coord[0] + 1, coord[1]],
+                   [coord[0] - 1, coord[1]],
+                   [coord[0], coord[1] + 1],
+                   [coord[0], coord[1] - 1]]
 
     result = list()
-    for n in nearCoords:
-        id_n = idByCoord(n, graph)
+    for n in near_coords:
+        id_n = id_by_coord(n, graph)
         if id_n != -1:
             result.append(id_n)
     return result
 
 
-def pathFromTo(graph: dict, start_coords: list, dest_coords: list):
+def path_from_to(graph: dict, start_coords: list, dest_coords: list):
     path = list([dest_coords])
     current_coord = dest_coords
-    dest_parent = graph[idByCoord(current_coord, graph)].parent_id
+    dest_parent = graph[id_by_coord(current_coord, graph)].parent_id
     if dest_parent == -1:
         return list()
     while current_coord != start_coords:
-        parent_id = graph[idByCoord(current_coord, graph)].parent_id
+        parent_id = graph[id_by_coord(current_coord, graph)].parent_id
         current_coord = graph[parent_id].coord
         path.append(current_coord)
     return path[::-1]
-
-
-def startAndEntToMap(input_map, start_coords, dest_coords):
-    map_with_start_end = copy.deepcopy(input_map)
-    map_with_start_end[start_coords[0]][start_coords[1]] = 5
-    map_with_start_end[dest_coords[0]][dest_coords[1]] = 6
-    return map_with_start_end
-
-
-def routeToMap(input_map, route, color=7):
-    map_with_all = copy.deepcopy(input_map)
-    for r in range(1, len(route) - 1):
-        input_map[route[r][0]][route[r][1]] = color
-    return map_with_all

@@ -5,11 +5,13 @@ class DHMatrix:
     """Класс для работы с матрицей Денавита-Хартенберга"""
 
     @staticmethod
-    def matrix(r, a, d, theta):
+    def matrix(r_length, alpha, d_length, theta):
         """Возвращает матрицу Денавита-Хартенберга из входных параметров"""
-        return sy.Matrix([[sy.cos(theta), -1 * sy.sin(theta) * sy.cos(a), sy.sin(theta) * sy.sin(a), r * sy.cos(theta)],
-                         [sy.sin(theta), sy.cos(theta) * sy.cos(a), -1 * sy.cos(theta) * sy.sin(a), r * sy.sin(theta)],
-                         [0, sy.sin(a), sy.cos(a), d],
+        return sy.Matrix([[sy.cos(theta), -1 * sy.sin(theta) * sy.cos(alpha),
+                           sy.sin(theta) * sy.sin(alpha), r_length * sy.cos(theta)],
+                         [sy.sin(theta), sy.cos(theta) * sy.cos(alpha),
+                          -1 * sy.cos(theta) * sy.sin(alpha), r_length * sy.sin(theta)],
+                         [0, sy.sin(alpha), sy.cos(alpha), d_length],
                          [0, 0, 0, 1]])
 
     @staticmethod

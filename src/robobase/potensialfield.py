@@ -3,14 +3,14 @@ import math
 import numpy as np
 
 
-def GradientBasedPlanner(f, start_coords, end_coords, max_its):
-    gx = np.gradient(f, axis=0)
-    gy = np.gradient(f, axis=1)
+def gradient_based_planner(f, start_coords, end_coords, max_its):
+    gradient_x = np.gradient(f, axis=0)
+    gradient_y = np.gradient(f, axis=1)
     route = [start_coords]
     cur_coords = np.array(start_coords)
-    for i in range(max_its):
-        direction = np.array([gx[int(cur_coords[0])][int(cur_coords[1])],
-                              gy[int(cur_coords[0])][int(cur_coords[1])]])
+    for _ in range(max_its):
+        direction = np.array([gradient_x[int(cur_coords[0])][int(cur_coords[1])],
+                              gradient_y[int(cur_coords[0])][int(cur_coords[1])]])
         direction = direction / math.sqrt(direction[0] ** 2 + direction[1] ** 2)
 
         cur_coords = np.array([cur_coords[0] - direction[0], cur_coords[1] - direction[1]])

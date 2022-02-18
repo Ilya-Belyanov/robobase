@@ -4,7 +4,7 @@ from math import pi
 import numpy as np
 
 
-def xRotation(vector, theta):
+def x_rotate(vector, theta):
     """Поворот 3D вектора вокруг оси x"""
     R = np.array([[1, 0, 0],
                   [0, np.cos(theta), -np.sin(theta)],
@@ -12,7 +12,7 @@ def xRotation(vector, theta):
     return np.dot(R, vector)
 
 
-def yRotate(vector, theta):
+def y_rotate(vector, theta):
     """Поворот 3D вектора вокруг оси y"""
     R = np.array([[np.cos(theta), 0, np.sin(theta)],
                   [0, 1, 0],
@@ -20,7 +20,7 @@ def yRotate(vector, theta):
     return np.dot(R, vector)
 
 
-def zRotate(vector, theta):
+def z_rotate(vector, theta):
     """Поворот 3D вектора вокруг оси z"""
     R = np.array([[np.cos(theta), -np.sin(theta), 0],
                   [np.sin(theta), np.cos(theta), 0],
@@ -28,9 +28,9 @@ def zRotate(vector, theta):
     return np.dot(R, vector)
 
 
-def randomRotate(vector):
+def random_rotate(vector):
     """Поворот 3D вектора на рандомные углы вокруг оси x, y и z"""
     x = random.randint(int(-pi * 100), int(pi * 100)) / 100
     y = random.randint(int(-pi * 100), int(pi * 100)) / 100
     z = random.randint(int(-pi * 100), int(pi * 100)) / 100
-    return zRotate(yRotate(xRotation(vector, x), y), z)
+    return z_rotate(y_rotate(x_rotate(vector, x), y), z)

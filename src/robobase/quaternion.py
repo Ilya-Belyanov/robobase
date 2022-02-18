@@ -1,8 +1,11 @@
-import numpy
 import math
+
+import numpy
 
 
 class Quaternion:
+    """Implementation of the Quaternion algorithms"""
+
     def __init__(self, scalar: float = 1.0, vector=None):
         if vector is None:
             vector = [1, 1, 1]
@@ -10,16 +13,18 @@ class Quaternion:
         self._vector = numpy.array(vector)
 
     @classmethod
-    def fromAngleAndVector(cls, angle: float = 0.0, v=None):
+    def from_angle_and_vector(cls, angle: float = 0.0, v=None):
         if v is None:
             v = [1, 1, 1]
-        _scalar = math.cos(angle/2)
-        _vector = numpy.array(v) * math.sin(angle/2)
+        _scalar = math.cos(angle / 2)
+        _vector = numpy.array(v) * math.sin(angle / 2)
         return cls(_scalar, _vector)
 
     def __mul__(self, other):
         scalar = self._scalar * other.scalar - numpy.dot(self.vector.transpose(), other.vector)
-        vector = self._scalar * other.vector + other.scalar * self.vector + numpy.cross(self.vector, other.vector)
+        vector = self._scalar * other.vector \
+                 + other.scalar * self.vector \
+                 + numpy.cross(self.vector, other.vector)
         return Quaternion(scalar, vector)
 
     def __add__(self, other):
@@ -32,16 +37,16 @@ class Quaternion:
         vector = self._vector - other.vector
         return Quaternion(scalar, vector)
 
-    def scalarMulti(self, other) -> float:
+    def scalar_multi(self, other) -> float:
         return (other.scalar * self.scalar + other.x * self.x + other.y * self.y + other.z * self.z) \
                / (self.norma() * other.norma())
 
-    def multiToScalar(self, s):
-        scalar = self._scalar *  s
+    def multi_to_scalar(self, s):
+        scalar = self._scalar * s
         vector = self._vector * s
         return Quaternion(scalar, vector)
 
-    def toRotateMatrix(self):
+    def to_rotate_matrix(self):
         a11 = 1 - 2 * self.y ** 2 - 2 * self.z ** 2
         a12 = 2 * self.x * self.y - 2 * self.z * self.scalar
         a13 = 2 * self.x * self.z + 2 * self.y * self.scalar
@@ -54,10 +59,10 @@ class Quaternion:
         a32 = 2 * self.y * self.z + 2 * self.x * self.scalar
         a33 = 1 - 2 * self.x ** 2 - 2 * self.y ** 2
 
-        R = numpy.array([[a11, a12, a13],
-                         [a21, a22, a23],
-                         [a31, a32, a33]])
-        return R
+        rotate = numpy.array([[a11, a12, a13],
+                              [a21, a22, a23],
+                              [a31, a32, a33]])
+        return rotate
 
     def norma(self):
         return math.sqrt(self._scalar ** 2 + numpy.dot(self._vector.transpose(), self._vector))

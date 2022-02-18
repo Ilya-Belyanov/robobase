@@ -2,7 +2,7 @@ import math
 import numpy as np
 
 
-def rotateMatrixToAxisAndAngle(r):
+def rotate_matrix_to_axis_and_angle(r):
     theta = math.acos((np.trace(r) - 1) / 2)
     if round(theta, 5) == 0:
         return theta, np.array([None, None, None]), None
@@ -22,4 +22,3 @@ def rotateMatrixToAxisAndAngle(r):
                   r[1][0] - r[0][1]])
     w = w/(2 * math.sin(theta))
     return theta, w, None
-
